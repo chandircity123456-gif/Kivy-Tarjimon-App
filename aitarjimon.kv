@@ -1,0 +1,101 @@
+#: import Factory kivy.factory.Factory
+
+# LanguagePicker sinfi kichik harflar bilan
+<languagepicker@BoxLayout>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: '65dp'
+    Label:
+        id: title
+        text: root.title_text
+        size_hint_y: None
+        height: '20dp'
+        bold: True
+        font_size: '15dp'
+        halign: 'left'
+        text_size: self.size
+    Spinner:
+        id: language_spinner
+        text: 'O\'zbekcha'
+        values: ['O\'zbekcha', 'Inglizcha', 'Ruscha']
+        size_hint_y: None
+        height: '45dp'
+        background_color: [0.1, 0.5, 1, 1] if self.state == 'normal' else [0.5, 0.5, 0.5, 1]
+
+
+# Asosiy layout (appim.py dagi Translatorbox sinfidan foydalanadi)
+<Translatorbox>:
+    orientation: 'vertical'
+    padding: dp(15)
+    spacing: dp(15)
+    
+    # Sarlavha
+    Label:
+        text: "Gemini AI Tarjimoni"
+        size_hint_y: None
+        height: '30dp'
+        font_size: '24dp'
+        bold: True
+        color: (0.2, 0.2, 0.2, 1)
+
+    # Manba Tili Tanlagich (languagepicker ishlatildi)
+    languagepicker:
+        id: source_lang_picker
+        title_text: "Manba Tili"
+        
+    # Kirish Matni Sarlavhasi
+    Label:
+        text: "Kirish Matni"
+        size_hint_y: None
+        height: '20dp'
+        font_size: '17dp'
+        bold: True
+        halign: 'left'
+        text_size: self.size
+
+    # Kirish Maydoni
+    TextInput:
+        id: input_text
+        size_hint_y: None
+        height: '130dp'
+        font_size: '18dp'
+        hint_text: "Tarjima qilmoqchi bo'lgan matnni kiriting..."
+        multiline: True
+        padding: [10, 10, 10, 10]
+
+    # Tarjima Tugmasi
+    Button:
+        id: translate_button
+        text: "Tarjima qilish"
+        size_hint_y: None
+        height: '50dp'
+        font_size: '20dp'
+        background_color: (0.1, 0.5, 1, 1)
+        on_release: root.translate_text(input_text.text, source_lang_picker.ids.language_spinner.text, target_lang_picker.ids.language_spinner.text)
+
+    # Maqsad Tili Tanlagich (languagepicker ishlatildi)
+    languagepicker:
+        id: target_lang_picker
+        title_text: "Maqsad Tili"
+        
+    # Natija Sarlavhasi
+    Label:
+        text: "Natija Matni"
+        size_hint_y: None
+        height: '20dp'
+        font_size: '17dp'
+        bold: True
+        halign: 'left'
+        text_size: self.size
+        
+    # Natija Maydoni (ScrollView ichida)
+    ScrollView:
+        Label:
+            id: result_label
+            text: "Tarjima natijasi shu yerda paydo bo'ladi."
+            size_hint_y: None
+            height: self.texture_size[1]
+            font_size: '18dp'
+            text_size: self.width, None
+            padding: [12, 12, 12, 12]
+            color: (0.3, 0.3, 0.3, 1)

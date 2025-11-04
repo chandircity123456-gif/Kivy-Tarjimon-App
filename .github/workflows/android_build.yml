@@ -1,0 +1,33 @@
+# GitHub Actions ish oqimi nomi
+name: Buildozer
+
+# Qachon ishga tushirish kerak
+on:
+  push:
+    branches:
+      - master # Faqat 'master' branch'iga push bo'lganda ishlasin
+
+# Jarayonlar
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install buildozer
+        run: pip install buildozer
+      
+      - name: Build Kivy APK
+        # buildozer android debug buyrug'i barcha kerka mahsulotlarni o'rnatadi
+        run: buildozer android debug
+      
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Kivy-Tarjimon-App-release
+          path: bin/*.apk
+          retention-days: 7

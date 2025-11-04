@@ -18,11 +18,12 @@ jobs:
         with:
           python-version: '3.10'
       
-      - name: Install buildozer
-        run: pip install buildozer
+      - name: Install buildozer and requirements
+        # Bu qator tuzatildi: buildozer, cython va requests birga o'rnatiladi
+        run: pip install buildozer cython requests
       
       - name: Build Kivy APK
-        # buildozer android debug buyrug'i barcha kerka mahsulotlarni o'rnatadi
+        # buildozer android debug buyrug'i barcha kerakli mahsulotlarni o'rnatadi
         run: buildozer android debug
       
       - name: Upload APK
